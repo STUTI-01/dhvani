@@ -1,4 +1,4 @@
-# dhvani
+# dhvani-app
 
 A new Flutter project.
 
