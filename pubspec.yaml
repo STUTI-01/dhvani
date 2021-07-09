@@ -51,6 +51,7 @@ dev_dependencies:
   firebase_core: ^1.3.0
   cloud_firestore: ^2.3.0
   google_sign_in: "^4.5.1"
+  audiocutter: ^0.0.9
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
@@ -79,11 +80,6 @@ flutter:
   # "family" key with the font family name, and a "fonts" key with a
   # list giving the asset and other descriptors for the font. For
   # example:
-  fonts:
-    - family: isocpeur
-      fonts:
-        - asset: assets/fonts/isocpeur.ttf
-        - asset: assets/fonts/isocpeui.ttf
   #   - family: Trajan Pro
   #     fonts:
   #       - asset: fonts/TrajanPro.ttf
