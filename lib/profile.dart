@@ -111,7 +111,6 @@ class _TestingState extends State<Testing> {
 
 import 'package:flutter/material.dart';
 
-
 class MyApp1 extends StatefulWidget {
   @override
   _MyApp1State createState() => _MyApp1State();
@@ -128,78 +127,65 @@ class _MyApp1State extends State<MyApp1> with SingleTickerProviderStateMixin {
 
   @override
   Widget build(BuildContext context) {
-    var s=MediaQuery.of(context).size.width;
     return Scaffold(
-      body: 
-        Column(
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            
-             Container(
-         alignment: Alignment.center,
-           margin:  EdgeInsets.only(top: 100.0),
-      width: 100.0,
-      height: 100.0,
-      decoration:  BoxDecoration(
-       border:
-      Border.all(
+      body: Column(
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          Container(
+            alignment: Alignment.center,
+            margin: EdgeInsets.only(top: 100.0),
+            width: 100.0,
+            height: 100.0,
+            decoration: BoxDecoration(
+              border: Border.all(
                 color: Colors.blue,
-                width: 2.0 ,
+                width: 2.0,
               ),
-      
-      shape: BoxShape.circle,
-      ),),
-               // ignore: prefer_const_constructors
-              
-               Container(
-         alignment: Alignment.center,
-           margin: const EdgeInsets.only(left: 0),
-      width: 100.0,
-      height: 40.0,
-    
-      child:  Text("abcdxyz"),
-      
-      ),
+              shape: BoxShape.circle,
+            ),
+          ),
+          // ignore: prefer_const_constructors
 
-       Container(
-         alignment: Alignment.center,
-           margin: const EdgeInsets.only(left:0),
-      width: 100.0,
-      height: 40.0,
-    
-      child:  Text("100 points "),
-      
-      ),
-            TabBar(
-              unselectedLabelColor: Colors.black,
-              labelColor: Colors.blueAccent,
-              tabs: [
-                Tab(
-                  text: 'Badges',
-                ),
-                Tab(
-                  text: 'chats',
-                ),
-             
-               
+          Container(
+            alignment: Alignment.center,
+            margin: const EdgeInsets.only(left: 0),
+            width: 100.0,
+            height: 40.0,
+            child: Text("abcdxyz"),
+          ),
+
+          Container(
+            alignment: Alignment.center,
+            margin: const EdgeInsets.only(left: 0),
+            width: 100.0,
+            height: 40.0,
+            child: Text("100 points "),
+          ),
+          TabBar(
+            unselectedLabelColor: Colors.black,
+            labelColor: Colors.blueAccent,
+            tabs: [
+              Tab(
+                text: 'Badges',
+              ),
+              Tab(
+                text: 'chats',
+              ),
+            ],
+            controller: _tabController,
+            indicatorSize: TabBarIndicatorSize.tab,
+          ),
+          Expanded(
+            child: TabBarView(
+              children: [
+                Container(child: Center(child: Text('people'))),
+                Container(child: Center(child: Text('people'))),
               ],
               controller: _tabController,
-              indicatorSize: TabBarIndicatorSize.tab,
             ),
-            Expanded(
-              child: TabBarView(
-                children: [
-                  Container(child: Center(child: Text('people'))),
-                 Container(child: Center(child: Text('people'))),
-                
-               
-                ],
-                controller: _tabController,
-              ),
-            ),
-          ],
-        ),
-      
+          ),
+        ],
+      ),
     );
   }
 }
