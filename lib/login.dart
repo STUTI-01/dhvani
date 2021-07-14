@@ -1,3 +1,4 @@
+import 'package:dhvani/test.dart';
 import 'package:dhvani/trim_audio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -77,9 +78,15 @@ class _LoginPageState extends State<LoginPage> {
                 Navigator.push(
                     context,
                     MaterialPageRoute(
-                        builder: (context) => TrimAudio(
+                        builder: (context) => Test(
                             start: double.parse(startController.text),
                             end: double.parse(endController.text))));
+                /*Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => TrimAudio(
+                            start: double.parse(startController.text),
+                            end: double.parse(endController.text))));*/
               },
               child: const Text('Trim Audio'),
             ),

@@ -52,7 +52,8 @@ dev_dependencies:
   cloud_firestore: ^2.3.0
   google_sign_in: "^4.5.1"
   assets_audio_player: ^3.0.3+3
-  flutter_visualizers: ^0.0.2
+  just_audio: ^0.8.0
+ 
 
 
 # For information on the generic Dart part of this file, see the
