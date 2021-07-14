@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:just_audio/just_audio.dart';
-
+import 'package:rxdart/rxdart.dart';
+import 'common.dart';
 class Test extends StatefulWidget {
   final double start;
   final double end;
@@ -31,31 +32,43 @@ class _TestState extends State<Test> {
         end: Duration(seconds: widget.end.round()));
     await player.play();
   }
+  Stream<PositionData> get _positionDataStream =>
+      Rx.combineLatest3<Duration, Duration, Duration?, PositionData>(
+          player.positionStream,
+          player.bufferedPositionStream,
+          player.durationStream,
+          (position, bufferedPosition, duration) => PositionData(
+              position, bufferedPosition, duration ?? Duration.zero));
 
   @override
   Widget build(BuildContext context) {
-    double height = MediaQuery.of(context).size.height;
-    double width = MediaQuery.of(context).size.width;
-    return Scaffold(
-      body: Padding(
-        padding: EdgeInsets.only(
-          top: 0.2 * height,
-          left: 0.2 * width,
-        ),
-        child: Column(
-          children: [
-            Container(
-                color: Colors.blue.withOpacity(0.6),
-                height: 200,
-                width: 300,
-                child: ControlButtons(player, trimSong)),
-            GestureDetector(
-              child: const Text("PLAY"),
-              onTap: () {
-                initialisePlayer();
-              },
-            ),
-          ],
+    return MaterialApp(
+      debugShowCheckedModeBanner: false,
+      home: Scaffold(
+        body: SafeArea(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              // Display play/pause button and volume/speed sliders.
+              ControlButtons(player: player, trim : trimSong),
+              // Display seek bar. Using StreamBuilder, this widget rebuilds
+              // each time the position, buffered position or duration changes.
+              StreamBuilder<PositionData>(
+                stream: _positionDataStream,
+                builder: (context, snapshot) {
+                  final positionData = snapshot.data;
+                  return SeekBar(
+                    duration: positionData?.duration ?? Duration.zero,
+                    position: positionData?.position ?? Duration.zero,
+                    bufferedPosition:
+                        positionData?.bufferedPosition ?? Duration.zero,
+                    onChangeEnd: player.seek,
+                  );
+                },
+              ),
+            ],
+          ),
         ),
       ),
     );
@@ -66,8 +79,8 @@ class _TestState extends State<Test> {
 class ControlButtons extends StatelessWidget {
   final AudioPlayer player;
   final Function trim;
-
-  ControlButtons(this.player, this.trim);
+  const ControlButtons({Key? key, required this.player, required this.trim})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -76,17 +89,17 @@ class ControlButtons extends StatelessWidget {
       children: [
         // Opens volume slider dialog
         IconButton(
-          icon: Icon(Icons.volume_up),
+          icon: const Icon(Icons.volume_up),
           onPressed: () {
-            // showSliderDialog(
-            //   context: context,
-            //   title: "Adjust volume",
-            //   divisions: 10,
-            //   min: 0.0,
-            //   max: 1.0,
-            //   stream: player.volumeStream,
-            //   onChanged: player.setVolume,
-            // );
+            showSliderDialog(
+              context: context,
+              title: "Adjust volume",
+              divisions: 10,
+              min: 0.0,
+              max: 15.0,
+              stream: player.volumeStream,
+              onChanged: player.setVolume,
+            );
           },
         ),
 
@@ -103,14 +116,14 @@ class ControlButtons extends StatelessWidget {
             if (processingState == ProcessingState.loading ||
                 processingState == ProcessingState.buffering) {
               return Container(
-                margin: EdgeInsets.all(8.0),
+                margin: const EdgeInsets.all(8.0),
                 width: 64.0,
                 height: 64.0,
-                child: CircularProgressIndicator(),
+                child: const CircularProgressIndicator(),
               );
             } else if (playing != true) {
               return IconButton(
-                icon: Icon(Icons.play_arrow),
+                icon: const Icon(Icons.play_arrow),
                 iconSize: 64.0,
                 onPressed: () {
                   trim();
@@ -118,13 +131,13 @@ class ControlButtons extends StatelessWidget {
               );
             } else if (processingState != ProcessingState.completed) {
               return IconButton(
-                icon: Icon(Icons.pause),
+                icon: const Icon(Icons.pause),
                 iconSize: 64.0,
                 onPressed: player.pause,
               );
             } else {
               return IconButton(
-                icon: Icon(Icons.replay),
+                icon: const Icon(Icons.replay),
                 iconSize: 64.0,
                 onPressed: () => player.seek(Duration.zero),
               );
@@ -138,15 +151,15 @@ class ControlButtons extends StatelessWidget {
             icon: Text("${snapshot.data?.toStringAsFixed(1)}x",
                 style: const TextStyle(fontWeight: FontWeight.bold)),
             onPressed: () {
-              // showSliderDialog(
-              //   context: context,
-              //   title: "Adjust speed",
-              //   divisions: 10,
-              //   min: 0.5,
-              //   max: 1.5,
-              //   stream: player.speedStream,
-              //   onChanged: player.setSpeed,
-              // );
+              showSliderDialog(
+                context: context,
+                title: "Adjust speed",
+                divisions: 10,
+                min: 0.5,
+                max: 5.0,
+                stream: player.speedStream,
+                onChanged: player.setSpeed,
+              );
             },
           ),
         ),

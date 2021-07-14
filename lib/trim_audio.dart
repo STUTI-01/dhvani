@@ -46,7 +46,7 @@ class _TrimAudioState extends State<TrimAudio> {
   Widget build(BuildContext context) {
     return Scaffold(
         body: Padding(
-      padding: EdgeInsets.only(top: 100, left: 100),
+      padding: const EdgeInsets.only(top: 100, left: 100),
       child: Column(
         children: [
           GestureDetector(
@@ -54,8 +54,8 @@ class _TrimAudioState extends State<TrimAudio> {
               playAudio(0);
             },
             child: Container(
-              margin: EdgeInsets.only(top: 50),
-              child: Text(
+              margin: const EdgeInsets.only(top: 50),
+              child: const Text(
                 "PLAY",
                 style: TextStyle(color: Colors.black),
               ),
@@ -70,8 +70,8 @@ class _TrimAudioState extends State<TrimAudio> {
               playAudio(2);
             },
             child: Container(
-              margin: EdgeInsets.only(top: 50),
-              child: Text(
+              margin: const EdgeInsets.only(top: 50),
+              child: const Text(
                 "SEEK",
                 style: TextStyle(color: Colors.black),
               ),
@@ -82,12 +82,12 @@ class _TrimAudioState extends State<TrimAudio> {
             ),
           ),
           Container(
-            margin: EdgeInsets.only(top: 50),
+            margin: const EdgeInsets.only(top: 50),
             child: GestureDetector(
               onTap: () {
                 playAudio(1);
               },
-              child: Text(
+              child: const Text(
                 "STOP",
                 style: TextStyle(color: Colors.black),
               ),
