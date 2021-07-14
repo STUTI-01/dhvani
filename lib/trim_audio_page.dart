@@ -4,16 +4,16 @@ import 'package:flutter/services.dart';
 import 'package:wave/config.dart';
 import 'package:wave/wave.dart';
 
-class LoginPage extends StatefulWidget {
-  const LoginPage({
-    Key? key,
-  }) : super(key: key);
+class TrimAudioPage extends StatefulWidget {
+  final String url;
+  final String audioName;
+  const TrimAudioPage({Key? key, required this.url, required this.audioName}) : super(key: key);
 
   @override
-  _LoginPageState createState() => _LoginPageState();
+  _TrimAudioPageState createState() => _TrimAudioPageState();
 }
 
-class _LoginPageState extends State<LoginPage> {
+class _TrimAudioPageState extends State<TrimAudioPage> {
   TextEditingController startController = TextEditingController();
   TextEditingController endController = TextEditingController();
   @override
@@ -79,7 +79,10 @@ class _LoginPageState extends State<LoginPage> {
                     MaterialPageRoute(
                         builder: (context) => Test(
                             start: double.parse(startController.text),
-                            end: double.parse(endController.text))));
+                            end: double.parse(endController.text),
+                            url: widget.url,
+                            audioName: widget.audioName,
+                            )));
                 /*Navigator.push(
                     context,
                     MaterialPageRoute(

@@ -1,5 +1,7 @@
 import 'package:dhvani/authentication.dart';
-import 'package:dhvani/login.dart';
+import 'package:dhvani/trim_audio_page.dart';
+import 'package:dhvani/music_list.dart';
+import 'package:dhvani/welcome_page.dart';
 import 'package:flutter/material.dart';
 
 void main() {
@@ -16,7 +18,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: const LoginPage(),
+      home: const WelcomePage(),
     );
   }
 }

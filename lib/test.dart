@@ -1,11 +1,16 @@
+import 'package:dhvani/trim_audio_page.dart';
 import 'package:flutter/material.dart';
 import 'package:just_audio/just_audio.dart';
 import 'package:rxdart/rxdart.dart';
 import 'common.dart';
+
 class Test extends StatefulWidget {
   final double start;
   final double end;
-  const Test({Key? key, required this.start, required this.end})
+  final String url;
+  final String audioName;
+  const Test(
+      {Key? key, required this.start, required this.end, required this.url, required this.audioName})
       : super(key: key);
 
   @override
@@ -22,8 +27,7 @@ class _TestState extends State<Test> {
 
   void initialisePlayer() async {
     player = AudioPlayer();
-    await player.setUrl(
-        'https://firebasestorage.googleapis.com/v0/b/dhvani-aa814.appspot.com/o/NAVAGRAHA_MANTRAS.mp3?alt=media&token=0e7913fc-c82c-4c39-b3a3-3c1064e2f0a4');
+    await player.setUrl(widget.url);
   }
 
   void trimSong() async {
@@ -32,6 +36,7 @@ class _TestState extends State<Test> {
         end: Duration(seconds: widget.end.round()));
     await player.play();
   }
+
   Stream<PositionData> get _positionDataStream =>
       Rx.combineLatest3<Duration, Duration, Duration?, PositionData>(
           player.positionStream,
@@ -42,16 +47,58 @@ class _TestState extends State<Test> {
 
   @override
   Widget build(BuildContext context) {
+    double height = MediaQuery.of(context).size.height;
+    double width = MediaQuery.of(context).size.width;
+    double topPadding = MediaQuery.of(context).padding.top;
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       home: Scaffold(
-        body: SafeArea(
+        body: Padding(
+          padding: EdgeInsets.only(top: topPadding * 1.2, left: width * 0.05),
           child: Column(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            mainAxisAlignment: MainAxisAlignment.center,
             children: [
               // Display play/pause button and volume/speed sliders.
-              ControlButtons(player: player, trim : trimSong),
+              Padding(
+                padding: EdgeInsets.only(bottom: height * 0.13),
+                child: Row(
+                  children: [
+                    Container(
+                      decoration: BoxDecoration(
+                          color: Colors.blue.withOpacity(0.5),
+                          borderRadius: BorderRadius.circular(7)),
+                      child: IconButton(
+                          padding: const EdgeInsets.all(0),
+                          onPressed: () {
+                            Navigator.pop(context);
+                          },
+                          icon: const Icon(
+                            Icons.chevron_left,
+                            size: 25,
+                          )),
+                    ),
+                    Padding(
+                      padding: EdgeInsets.only(left: width * 0.08),
+                      child: Text(widget.audioName,
+                          style: const TextStyle(
+                              fontSize: 20, fontWeight: FontWeight.bold)),
+                    )
+                  ],
+                ),
+              ),
+              Container(
+                  height: height * 0.3,
+                  width: width * 0.6,
+                  decoration: BoxDecoration(
+                    color: Colors.blue,
+                    boxShadow: [
+                      BoxShadow(
+                        color: Colors.black.withOpacity(0.4),
+                        blurRadius: 5,
+                      )
+                    ],
+                    borderRadius: BorderRadius.circular(7),
+                  )),
+              ControlButtons(player: player, trim: trimSong),
               // Display seek bar. Using StreamBuilder, this widget rebuilds
               // each time the position, buffered position or duration changes.
               StreamBuilder<PositionData>(
@@ -67,6 +114,27 @@ class _TestState extends State<Test> {
                   );
                 },
               ),
+              Container(
+                margin: const EdgeInsets.only(top: 50),
+                child: GestureDetector(
+                  onTap: () {
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) =>
+                                TrimAudioPage(url: widget.url, audioName: widget.audioName,)));
+                  },
+                  child: const Text(
+                    "TRIM SHLOKA",
+                    style: TextStyle(
+                        color: Colors.black, fontWeight: FontWeight.bold),
+                  ),
+                ),
+                height: 50,
+                width: 250,
+                color: Colors.blue,
+                alignment: Alignment.center,
+              )
             ],
           ),
         ),
