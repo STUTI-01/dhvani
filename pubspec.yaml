@@ -68,8 +68,8 @@ flutter:
   uses-material-design: true
 
   # To add assets to your application, add an assets section, like this:
-  assets:
-    - assets/Audio/Ganesha_Chant_108_Times_Ganapathi_Mantra.mp3
+  
+    
 
 
   # An image asset can refer to one or more resolution-specific "variants", see
