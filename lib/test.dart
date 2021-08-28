@@ -1,4 +1,5 @@
 import 'package:dhvani/trim_audio_page.dart';
+import 'package:dhvani/visualize_audio.dart';
 import 'package:flutter/material.dart';
 import 'package:just_audio/just_audio.dart';
 import 'package:rxdart/rxdart.dart';
@@ -10,7 +11,11 @@ class Test extends StatefulWidget {
   final String url;
   final String audioName;
   const Test(
-      {Key? key, required this.start, required this.end, required this.url, required this.audioName})
+      {Key? key,
+      required this.start,
+      required this.end,
+      required this.url,
+      required this.audioName})
       : super(key: key);
 
   @override
@@ -19,6 +24,7 @@ class Test extends StatefulWidget {
 
 class _TestState extends State<Test> {
   late AudioPlayer player;
+  late Duration duration;
   @override
   void initState() {
     super.initState();
@@ -28,6 +34,7 @@ class _TestState extends State<Test> {
   void initialisePlayer() async {
     player = AudioPlayer();
     await player.setUrl(widget.url);
+    duration = (await player.duration)!;
   }
 
   void trimSong() async {
@@ -122,7 +129,9 @@ class _TestState extends State<Test> {
                         context,
                         MaterialPageRoute(
                             builder: (context) =>
-                                TrimAudioPage(url: widget.url, audioName: widget.audioName,)));
+                                // TrimAudioPage(url: widget.url, audioName: widget.audioName,)
+                                //
+                                VisualizeAudio(url: widget.url, audioName: widget.audioName, duration: duration,)));
                   },
                   child: const Text(
                     "TRIM SHLOKA",
