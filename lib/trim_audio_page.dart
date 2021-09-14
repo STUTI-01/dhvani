@@ -1,3 +1,4 @@
+import 'package:dhvani/final_pages/playing_audio_page.dart';
 import 'package:dhvani/test.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -77,10 +78,10 @@ class _TrimAudioPageState extends State<TrimAudioPage> {
                 Navigator.push(
                     context,
                     MaterialPageRoute(
-                        builder: (context) => Test(
+                        builder: (context) => AudioPlayingPage(
                             start: double.parse(startController.text),
                             end: double.parse(endController.text),
-                            url: widget.url,
+                            path: widget.url,
                             audioName: widget.audioName,
                             )));
                 /*Navigator.push(

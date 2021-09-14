@@ -1,3 +1,4 @@
+import 'package:dhvani/final_pages/playing_audio_page.dart';
 import 'package:dhvani/test.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -76,32 +77,32 @@ class _MusicListPageState extends State<MusicListPage> {
   List assetAudios = [
     {
       "title": "Dhyaye Nityam",
-      "path": "assets\Audio\dhyaye nityam.mp3",
+      "path": "assets/Audio/dhyaye nityam.mp3",
       "duration": "1 min",
       "seconds": 60.0,
     },
     {
       "title": "Gayatri Mantra",
-      "path": "assets\Audio\gayatri-mantra-raga-1 (mp3cut.net).mp3",
+      "path": "assets/Audio/gayatri-mantra-raga-1 (mp3cut.net).mp3",
       "duration": "39 secs",
       "seconds": 39.0,
     },
     {
       "title": "Guru Brahma Guru Vishnu",
-      "path": "assets\Audio\Guru Brahma Guru Vishnu - (Raag.Fm).mp3",
+      "path": "assets/Audio/Guru Brahma Guru Vishnu - (Raag.Fm).mp3",
       "duration": "1:24 min",
       "seconds": 84.0,
     },
     {
       "title": "Maha Mrutyunjaya Mantra",
       "path":
-          "assets\Audio\Maha-Mrutyunjaya-Mantra-108-cycles (mp3cut.net).mp3",
+          "assets/Audio/Maha-Mrutyunjaya-Mantra-108-cycles (mp3cut.net).mp3",
       "duration": "1:04 min",
       "seconds": 64.0,
     },
     {
       "title": "Sarve Bhavantu",
-      "path": "assets\Audio\Sarve Bhavantu.mp3",
+      "path": "assets/Audio/Sarve Bhavantu.mp3",
       "duration": "34 secs",
       "seconds": 34.0,
     }
@@ -152,11 +153,11 @@ class _MusicListPageState extends State<MusicListPage> {
                           Navigator.push(
                               context,
                               MaterialPageRoute(
-                                  builder: (context) => Test(
+                                  builder: (context) => AudioPlayingPage(
                                         start: 0.0,
                                         //TODO
                                         end: assetAudios[index]['seconds'],
-                                        url: assetAudios[index]['path'],
+                                        path: assetAudios[index]['path'],
                                         audioName: assetAudios[index]['title'],
                                       )));
                         },

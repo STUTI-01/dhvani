@@ -1,3 +1,4 @@
+import 'package:dhvani/final_pages/playing_audio_page.dart';
 import 'package:dhvani/test.dart';
 import 'package:flutter/material.dart';
 import 'package:syncfusion_flutter_sliders/sliders.dart';
@@ -83,10 +84,10 @@ class _VisualizeAudioState extends State<VisualizeAudio> {
                 Navigator.push(
                     context,
                     MaterialPageRoute(
-                        builder: (context) => Test(
+                        builder: (context) => AudioPlayingPage(
                               start: (widget.duration.inSeconds * start) / 10,
                               end: (widget.duration.inSeconds * end) / 10,
-                              url: widget.url,
+                              path: widget.url,
                               audioName: widget.audioName,
                             )));
               },
