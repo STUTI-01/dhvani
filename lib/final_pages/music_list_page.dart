@@ -10,29 +10,6 @@ class MusicListPage extends StatefulWidget {
 }
 
 class _MusicListPageState extends State<MusicListPage> {
-  List musicList = [
-    {
-      "title": "Ganapati Mantra",
-      "url":
-          "https://firebasestorage.googleapis.com/v0/b/dhvani-aa814.appspot.com/o/Ganesha_Chant_108_Times_Ganapathi_Mantra.mp3?alt=media&token=d030ce3e-d586-49f8-8b6b-2ffec22bcef5",
-      "duration": "20:37 mins",
-      "seconds": 1237.0
-    },
-    {
-      "title": "Navagraha Mantras",
-      "url":
-          "https://firebasestorage.googleapis.com/v0/b/dhvani-aa814.appspot.com/o/NAVAGRAHA_MANTRAS.mp3?alt=media&token=0e7913fc-c82c-4c39-b3a3-3c1064e2f0a4",
-      "duration": "34:54 mins",
-      "seconds": 2094.0
-    },
-    {
-      "title": "Gayatri Mantra",
-      "url":
-          "https://firebasestorage.googleapis.com/v0/b/dhvani-aa814.appspot.com/o/Rudrathi-Gayatri-Mantra.mp3?alt=media&token=493708bc-27da-40e5-9367-7c9a0f3bada7",
-      "duration": "30:37 mins",
-      "seconds": 1837.0
-    }
-  ];
   List dhyayeNityam = [
     {"line": "Dhyaye Nityam Mahesham, Rajatgirnibham", "time": 4},
     {"line": "Charuchandra Vatansam, Ratnakalpo Jwalangam", "time": 12},
@@ -168,7 +145,7 @@ class _MusicListPageState extends State<MusicListPage> {
             Expanded(
                 child: ListView.builder(
                     shrinkWrap: true,
-                    itemCount: musicList.length,
+                    itemCount: assetAudios.length,
                     itemBuilder: (BuildContext context, int index) {
                       return GestureDetector(
                         onTap: () {
@@ -177,9 +154,10 @@ class _MusicListPageState extends State<MusicListPage> {
                               MaterialPageRoute(
                                   builder: (context) => Test(
                                         start: 0.0,
-                                        end: musicList[index]['seconds'],
-                                        url: musicList[index]['url'],
-                                        audioName: musicList[index]['title'],
+                                        //TODO
+                                        end: assetAudios[index]['seconds'],
+                                        url: assetAudios[index]['path'],
+                                        audioName: assetAudios[index]['title'],
                                       )));
                         },
                         child: Container(
@@ -210,14 +188,14 @@ class _MusicListPageState extends State<MusicListPage> {
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
                                     Text(
-                                      musicList[index]['title'],
+                                      assetAudios[index]['title'],
                                       style: const TextStyle(
                                         fontSize: 17,
                                         fontWeight: FontWeight.w500,
                                       ),
                                     ),
                                     Text(
-                                      "\n" + musicList[index]['duration'],
+                                      "\n" + assetAudios[index]['duration'],
                                       style: const TextStyle(
                                         fontSize: 15,
                                         fontWeight: FontWeight.w400,

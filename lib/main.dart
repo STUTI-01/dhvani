@@ -1,7 +1,5 @@
 import 'package:dhvani/authentication.dart';
-import 'package:dhvani/trim_audio_page.dart';
-import 'package:dhvani/music_list.dart';
-import 'package:dhvani/welcome_page.dart';
+import 'package:dhvani/final_pages/welcome_page.dart';
 import 'package:flutter/material.dart';
 
 void main() {
