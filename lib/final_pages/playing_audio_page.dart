@@ -1,5 +1,6 @@
+import 'dart:async';
+import 'dart:ui';
 import 'package:dhvani/common.dart';
-import 'package:dhvani/visualize_audio.dart';
 import 'package:flutter/material.dart';
 import 'package:just_audio/just_audio.dart';
 import 'package:rxdart/rxdart.dart';
@@ -9,12 +10,14 @@ class AudioPlayingPage extends StatefulWidget {
   final double end;
   final String path;
   final String audioName;
+  final List lyrics;
   const AudioPlayingPage(
       {Key? key,
       required this.start,
       required this.end,
       required this.path,
-      required this.audioName})
+      required this.audioName,
+      required this.lyrics})
       : super(key: key);
 
   @override
@@ -46,11 +49,39 @@ class _AudioPlayingPageState extends State<AudioPlayingPage> {
           player.durationStream,
           (position, bufferedPosition, duration) => PositionData(
               position, bufferedPosition, duration ?? Duration.zero));
+  ScrollController _scrollController = ScrollController();
+  initialiseScroll(int height) async {
+    setState(() {
+      _scrollController = ScrollController(initialScrollOffset: height * 10.0);
+    });
+  }
+
+  Timer? timer;
+  scrollToLyrics(int seconds, Timer timer) {
+    for (Map line in widget.lyrics) {
+      if (line["time"] == seconds) {
+        print(line["line"]);
+
+        if (line["index"] * 10.0 >=
+            _scrollController.position.maxScrollExtent) {
+          timer.cancel();
+        }
+        setState(() {
+          _scrollController.jumpTo(line["index"] * 10.0);
+        });
+      }
+    }
+    print(seconds);
+  }
 
   @override
   void initState() {
     super.initState();
     initialisePlayer();
+    initialiseScroll(0);
+    //TODO
+    timer = Timer.periodic(
+        Duration(seconds: 1), (Timer t) => scrollToLyrics(t.tick, t));
   }
 
   @override
@@ -122,33 +153,54 @@ class _AudioPlayingPageState extends State<AudioPlayingPage> {
                   );
                 },
               ),
-              Container(
-                margin: const EdgeInsets.only(top: 50),
-                child: GestureDetector(
-                  onTap: () {
-                    Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) =>
-                                // TrimAudioPage(url: widget.url, audioName: widget.audioName,)
-                                //
-                                VisualizeAudio(
-                                  url: widget.path,
-                                  audioName: widget.audioName,
-                                  duration: duration,
-                                )));
-                  },
-                  child: const Text(
-                    "TRIM SHLOKA",
-                    style: TextStyle(
-                        color: Colors.black, fontWeight: FontWeight.bold),
-                  ),
-                ),
-                height: 50,
-                width: 250,
-                color: Colors.blue,
-                alignment: Alignment.center,
-              )
+              // Container(
+              //   margin: const EdgeInsets.only(top: 50),
+              //   child: GestureDetector(
+              //     onTap: () {
+              //       Navigator.push(
+              //           context,
+              //           MaterialPageRoute(
+              //               builder: (context) =>
+              //                   // TrimAudioPage(url: widget.url, audioName: widget.audioName,)
+              //                   //
+              //                   VisualizeAudio(
+              //                     url: widget.path,
+              //                     audioName: widget.audioName,
+              //                     duration: duration,
+              //                   )));
+              //     },
+              //     child: const Text(
+              //       "TRIM SHLOKA",
+              //       style: TextStyle(
+              //           color: Colors.black, fontWeight: FontWeight.bold),
+              //     ),
+              //   ),
+              //   height: 50,
+              //   width: 250,
+              //   color: Colors.blue,
+              //   alignment: Alignment.center,
+              // )
+              Expanded(
+                  child: ListView.builder(
+                      controller: _scrollController,
+                      itemCount: widget.lyrics.length,
+                      itemBuilder: (BuildContext context, int index) {
+                        return GestureDetector(
+                          onTap: () {
+                            //print(player.position);
+                            player.seek(Duration(
+                                seconds: widget.lyrics[index]["time"]));
+                          },
+                          child: Text(
+                            widget.lyrics[index]["line"] + "\n",
+                            style: TextStyle(
+                                fontSize: 25,
+                                color: player.position.inSeconds >= widget.lyrics[index]["time"] && player.position.inSeconds <= widget.lyrics[index]["end_time"]
+                                    ? Colors.blue
+                                    : Colors.black),
+                          ),
+                        );
+                      }))
             ],
           ),
         ),
@@ -215,7 +267,10 @@ class ControlButtons extends StatelessWidget {
               return IconButton(
                 icon: const Icon(Icons.pause),
                 iconSize: 64.0,
-                onPressed: player.pause,
+                onPressed: () {
+                  player.pause();
+                  //TODO
+                },
               );
             } else {
               return IconButton(

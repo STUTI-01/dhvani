@@ -1,5 +1,4 @@
 import 'package:dhvani/final_pages/playing_audio_page.dart';
-import 'package:dhvani/test.dart';
 import 'package:flutter/material.dart';
 import 'package:syncfusion_flutter_sliders/sliders.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
@@ -9,11 +8,13 @@ class VisualizeAudio extends StatefulWidget {
   final String url;
   final String audioName;
   final Duration duration;
+  final List lyrics;
   VisualizeAudio(
       {Key? key,
       required this.url,
       required this.audioName,
-      required this.duration})
+      required this.duration,
+      required this.lyrics})
       : super(key: key);
 
   @override
@@ -76,7 +77,7 @@ class _VisualizeAudioState extends State<VisualizeAudio> {
                   height: 250,
                 ),
               )),
-            Text("start : " + start.toString() + "   end : " + end.toString()),
+          Text("start : " + start.toString() + "   end : " + end.toString()),
           Container(
             margin: const EdgeInsets.only(top: 50),
             child: GestureDetector(
@@ -89,6 +90,7 @@ class _VisualizeAudioState extends State<VisualizeAudio> {
                               end: (widget.duration.inSeconds * end) / 10,
                               path: widget.url,
                               audioName: widget.audioName,
+                              lyrics: widget.lyrics,
                             )));
               },
               child: const Text(

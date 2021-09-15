@@ -1,5 +1,4 @@
 import 'package:dhvani/final_pages/playing_audio_page.dart';
-import 'package:dhvani/test.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:wave/config.dart';
@@ -8,7 +7,9 @@ import 'package:wave/wave.dart';
 class TrimAudioPage extends StatefulWidget {
   final String url;
   final String audioName;
-  const TrimAudioPage({Key? key, required this.url, required this.audioName}) : super(key: key);
+  final List lyrics;
+  const TrimAudioPage({Key? key, required this.url, required this.audioName, required this.lyrics})
+      : super(key: key);
 
   @override
   _TrimAudioPageState createState() => _TrimAudioPageState();
@@ -79,10 +80,11 @@ class _TrimAudioPageState extends State<TrimAudioPage> {
                     context,
                     MaterialPageRoute(
                         builder: (context) => AudioPlayingPage(
-                            start: double.parse(startController.text),
-                            end: double.parse(endController.text),
-                            path: widget.url,
-                            audioName: widget.audioName,
+                              start: double.parse(startController.text),
+                              end: double.parse(endController.text),
+                              path: widget.url,
+                              audioName: widget.audioName,
+                              lyrics: widget.lyrics,
                             )));
                 /*Navigator.push(
                     context,
