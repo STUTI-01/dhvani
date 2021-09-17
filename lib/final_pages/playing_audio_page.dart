@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:ui';
 import 'package:dhvani/common.dart';
+import 'package:dhvani/visualize_audio.dart';
 import 'package:flutter/material.dart';
 import 'package:just_audio/just_audio.dart';
 import 'package:rxdart/rxdart.dart';
@@ -58,15 +59,27 @@ class _AudioPlayingPageState extends State<AudioPlayingPage> {
 
   Timer? timer;
   scrollToLyrics(int seconds, Timer timer) {
-    for (Map line in widget.lyrics) {
-      if (line["time"] == seconds) {
-        print(line["line"]);
+    // int timeRemaining = player.duration!.inSeconds - player.position.inSeconds;
+    // print("Time Remaining : " + timeRemaining.toString());
 
-        if (line["index"] * 10.0 >=
-            _scrollController.position.maxScrollExtent) {
-          timer.cancel();
-        }
+    // for (Map line in widget.lyrics) {
+    //   if (line["time"] == seconds) {
+    //     print(line["line"]);
+    //     if (line["index"] * 10.0 >=
+    //         _scrollController.position.maxScrollExtent) {
+    //       timer.cancel();
+    //     }
+    //     setState(() {
+    //       _scrollController.jumpTo(line["index"] * 10.0);
+    //     });
+    //   }
+    // }
+    int songTimeSeconds = player.position.inSeconds;
+    for (Map line in widget.lyrics) {
+      if (songTimeSeconds == line["time"] &&
+          line["index"] * 10.0 <= _scrollController.position.maxScrollExtent) {
         setState(() {
+          print(line["index"]);
           _scrollController.jumpTo(line["index"] * 10.0);
         });
       }
@@ -100,26 +113,62 @@ class _AudioPlayingPageState extends State<AudioPlayingPage> {
               Padding(
                 padding: EdgeInsets.only(bottom: height * 0.13),
                 child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
+                    Row(
+                      children: [
+                        Container(
+                          decoration: BoxDecoration(
+                              color: Colors.blue.withOpacity(0.5),
+                              borderRadius: BorderRadius.circular(7)),
+                          child: IconButton(
+                              padding: const EdgeInsets.all(0),
+                              onPressed: () {
+                                timer!.cancel();
+                                player.stop();
+                                Navigator.pop(context);
+                              },
+                              icon: const Icon(
+                                Icons.chevron_left,
+                                size: 25,
+                              )),
+                        ),
+                        Padding(
+                          padding: EdgeInsets.only(left: width * 0.08),
+                          child: SizedBox(
+                            width: width * 0.5,
+                            child: Text(widget.audioName,
+                                style: const TextStyle(
+                                    fontSize: 20, fontWeight: FontWeight.bold)),
+                          ),
+                        ),
+                      ],
+                    ),
                     Container(
+                      margin: EdgeInsets.only(right: width * 0.05),
                       decoration: BoxDecoration(
                           color: Colors.blue.withOpacity(0.5),
                           borderRadius: BorderRadius.circular(7)),
                       child: IconButton(
                           padding: const EdgeInsets.all(0),
                           onPressed: () {
-                            Navigator.pop(context);
+                            timer!.cancel();
+                            player.stop();
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => VisualizeAudio(
+                                          lyrics: widget.lyrics,
+                                          url: widget.path,
+                                          audioName: widget.audioName,
+                                          duration: duration,
+                                          player: player,
+                                        )));
                           },
                           icon: const Icon(
-                            Icons.chevron_left,
+                            Icons.cut,
                             size: 25,
                           )),
-                    ),
-                    Padding(
-                      padding: EdgeInsets.only(left: width * 0.08),
-                      child: Text(widget.audioName,
-                          style: const TextStyle(
-                              fontSize: 20, fontWeight: FontWeight.bold)),
                     )
                   ],
                 ),
@@ -181,26 +230,37 @@ class _AudioPlayingPageState extends State<AudioPlayingPage> {
               //   alignment: Alignment.center,
               // )
               Expanded(
-                  child: ListView.builder(
-                      controller: _scrollController,
-                      itemCount: widget.lyrics.length,
-                      itemBuilder: (BuildContext context, int index) {
-                        return GestureDetector(
-                          onTap: () {
-                            //print(player.position);
-                            player.seek(Duration(
-                                seconds: widget.lyrics[index]["time"]));
-                          },
-                          child: Text(
-                            widget.lyrics[index]["line"] + "\n",
-                            style: TextStyle(
-                                fontSize: 25,
-                                color: player.position.inSeconds >= widget.lyrics[index]["time"] && player.position.inSeconds <= widget.lyrics[index]["end_time"]
-                                    ? Colors.blue
-                                    : Colors.black),
-                          ),
-                        );
-                      }))
+                  child: Container(
+                margin: EdgeInsets.only(bottom: height * 0.05),
+                child: ListView.builder(
+                    controller: _scrollController,
+                    itemCount: widget.lyrics.length,
+                    itemBuilder: (BuildContext context, int index) {
+                      return GestureDetector(
+                        onTap: () {
+                          //print(player.position);
+                          player.seek(
+                              Duration(seconds: widget.lyrics[index]["time"]));
+                        },
+                        child: Text(
+                          widget.lyrics[index]["line"] + "\n",
+                          style: TextStyle(
+                              fontSize: player.position.inSeconds >=
+                                          widget.lyrics[index]["time"] &&
+                                      player.position.inSeconds <=
+                                          widget.lyrics[index]["end_time"]
+                                  ? 25
+                                  : 20,
+                              color: player.position.inSeconds >=
+                                          widget.lyrics[index]["time"] &&
+                                      player.position.inSeconds <=
+                                          widget.lyrics[index]["end_time"]
+                                  ? Colors.black
+                                  : Colors.grey),
+                        ),
+                      );
+                    }),
+              ))
             ],
           ),
         ),

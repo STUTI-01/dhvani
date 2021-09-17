@@ -21,38 +21,80 @@ class _MusicListPageState extends State<MusicListPage> {
       "line": "Charuchandra Vatansam, Ratnakalpo Jwalangam",
       "time": 12,
       "end_time": 22,
-      "index": 10
+      "index": 8
     },
     {
       "line": "Parashumrigvarabhivihastam Prasannam",
       "time": 22,
-      "end_time": 35,
-      "index": 20
+      "end_time": 30,
+      "index": 16
     },
-    {"line": "Padmaseelam Samantaat", "time": 30, "end_time": 35, "index": 30},
+    {"line": "Padmaseelam Samantaat", "time": 30, "end_time": 35, "index": 24},
     {
       "line": "Stutmamarganayehi Vgyagratkrityamvasanam",
       "time": 35,
       "end_time": 42,
-      "index": 40
+      "index": 32
     },
     {
       "line": "Vishwadhyam Vishwavandam Nikhilbhayaharam",
       "time": 42,
       "end_time": 50,
-      "index": 50
+      "index": 40
     },
-    {"line": "Panchvatram Trinetram", "time": 50, "end_time": 60, "index": 60}
+    {"line": "Panchvatram Trinetram", "time": 50, "end_time": 60, "index": 48},
+    {
+      "line": "                                ",
+      "time": 60,
+      "end_time": 60,
+      "index": 48
+    },
+    {
+      "line": "                                ",
+      "time": 60,
+      "end_time": 60,
+      "index": 48
+    },
+    {
+      "line": "                                ",
+      "time": 60,
+      "end_time": 60,
+      "index": 48
+    },
+    {
+      "line": "                                ",
+      "time": 60,
+      "end_time": 60,
+      "index": 48
+    },
   ];
   List gayatriMantra = [
-    {"line": "Om Bhur Bhuvaḥ Swaḥ", "time": 8},
-    {"line": "Tat-savitur Vareñyaṃ", "time": 12},
-    {"line": "Bhargo Devasya Dheemahi", "time": 16},
-    {"line": "Dhiyo Yonaḥ Prachodayāt", "time": 20},
-    {"line": "Om Bhur Bhuvaḥ Swaḥ", "time": 24},
-    {"line": "Tat-savitur Vareñyaṃ", "time": 28},
-    {"line": "Bhargo Devasya Dheemahi", "time": 32},
-    {"line": "Dhiyo Yonaḥ Prachodayāt", "time": 36}
+    {"line": "Om Bhur Bhuvaḥ Swaḥ", "time": 8, "end_time": 12, "index": 0},
+    {"line": "Tat-savitur Vareñyaṃ", "time": 12, "end_time": 16, "index": 5},
+    {
+      "line": "Bhargo Devasya Dheemahi",
+      "time": 16,
+      "end_time": 20,
+      "index": 10
+    },
+    {
+      "line": "Dhiyo Yonaḥ Prachodayāt",
+      "time": 20,
+      "end_time": 24,
+      "index": 15
+    },
+    {"line": "Om Bhur Bhuvaḥ Swaḥ", "time": 24, "end_time": 28, "index": 20},
+    {"line": "Tat-savitur Vareñyaṃ", "time": 28, "end_time": 32, "index": 25},
+    {
+      "line": "Bhargo Devasya Dheemahi",
+      "time": 32,
+      "end_time": 36,
+      "index": 30
+    },
+    {"line": "Dhiyo yo nah prachodayat", "time": 36, "end_time": 39, "index": 35},
+    {"line": "                       ", "time": 36, "end_time": 39, "index": 35},
+    {"line": "                       ", "time": 36, "end_time": 39, "index": 35},
+    {"line": "                       ", "time": 36, "end_time": 39, "index": 35}
   ];
   List guruBrahma = [
     {"line": "GururBrahma", "time": 9},
