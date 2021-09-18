@@ -1,5 +1,4 @@
 import 'dart:async';
-
 import 'package:dhvani/final_pages/playing_audio_page.dart';
 import 'package:flutter/material.dart';
 import 'package:syncfusion_flutter_sliders/sliders.dart';
@@ -8,6 +7,12 @@ import 'dart:math';
 import 'package:just_audio/just_audio.dart';
 import 'package:rxdart/rxdart.dart';
 import 'common.dart';
+import 'package:syncfusion_flutter_core/core.dart';
+import 'package:syncfusion_flutter_core/core_internal.dart';
+import 'package:syncfusion_flutter_core/legend_internal.dart';
+import 'package:syncfusion_flutter_core/localizations.dart';
+import 'package:syncfusion_flutter_core/theme.dart';
+import 'package:syncfusion_flutter_core/tooltip_internal.dart';
 
 class VisualizeAudio extends StatefulWidget {
   final String url;
@@ -15,13 +20,16 @@ class VisualizeAudio extends StatefulWidget {
   final Duration duration;
   final List lyrics;
   final AudioPlayer player;
+  final String path;
   const VisualizeAudio(
       {Key? key,
       required this.url,
       required this.audioName,
       required this.duration,
       required this.lyrics,
-      required this.player})
+      required this.player,
+      required this.path,
+      })
       : super(key: key);
 
   @override
@@ -31,6 +39,7 @@ class VisualizeAudio extends StatefulWidget {
 class _VisualizeAudioState extends State<VisualizeAudio> {
   //SfRangeValues _values = const SfRangeValues(0.3, 0.7);
   final int _min = 0;
+  int noOfTaps = 0;
   int _max = 0;
   late SfRangeValues _initialValues;
   late Random random;
@@ -39,18 +48,21 @@ class _VisualizeAudioState extends State<VisualizeAudio> {
   late dynamic end;
   Timer? timer;
   ScrollController _scrollController = ScrollController();
+  late RangeController _rangeController;
+  
   initialiseScroll(int height) async {
     setState(() {
       _scrollController = ScrollController(initialScrollOffset: height * 10.0);
     });
   }
   scrollToLyrics(int seconds, Timer timer) {
-    int songTimeSeconds = widget.player.position.inSeconds;
+    int songTimeSeconds = start + widget.player.position.inSeconds;
+    debugPrint("TIME THAT SHOULD BE THERE : " + songTimeSeconds.toString());
     for (Map line in widget.lyrics) {
       if (songTimeSeconds == line["time"] &&
           line["index"] * 10.0 <= _scrollController.position.maxScrollExtent) {
         setState(() {
-          debugPrint(line["index"]);
+          debugPrint(line["index"].toString());
           _scrollController.jumpTo(line["index"] * 10.0);
         });
       }
@@ -73,137 +85,184 @@ class _VisualizeAudioState extends State<VisualizeAudio> {
               position, bufferedPosition, duration ?? Duration.zero));
   @override
   void initState() {
+    initialiseScroll(0);
     _max = widget.duration.inSeconds;
     start = (widget.duration.inSeconds / 4).round();
     end = (widget.duration.inSeconds / 2).round();
     _initialValues = SfRangeValues((widget.duration.inSeconds / 4).round(),
         (widget.duration.inSeconds / 2).round());
+    _rangeController = RangeController(start: start, end : end);
     random = Random();
     _chartData = List<Data>.generate(
         50, (index) => Data(x: index + 1, y: random.nextInt(4).toDouble()));
-    initialiseScroll(0);
+    
     //TODO
     timer = Timer.periodic(
         const Duration(seconds: 1), (Timer t) => scrollToLyrics(t.tick, t));
     super.initState();
+    initialiseScroll(0);
+  }
+  @override
+  void dispose() {
+    _scrollController.dispose();
+    _rangeController.dispose();
+    super.dispose();
+  }
+  Future goBack() async
+  {
+Navigator.pushReplacement(context, MaterialPageRoute(builder: (BuildContext context) => AudioPlayingPage(start: 0.0, end: double.parse(widget.player.duration!.inSeconds.toString()), path: widget.path, audioName: widget.audioName, lyrics: widget.lyrics)));
   }
 
   @override
   Widget build(BuildContext context) {
     double width = MediaQuery.of(context).size.width;
     double height = MediaQuery.of(context).size.height;
-    return Scaffold(
-      body: Column(
-        children: [
-          Container(
-              margin: EdgeInsets.only(
-                  top: height * 0.1, left: width * 0.03, right: width * 0.03),
-              width: width,
-              child: SfRangeSelector(
-                min: _min,
-                max: _max,
-                initialValues: _initialValues,
-                onChanged: (value) {
-                  setState(() {
-                    start = value.start.round();
-                    end = value.end.round();
-                  });
-                },
-                showLabels: false,
-                child: SizedBox(
-                  child: SfCartesianChart(
-                    margin: const EdgeInsets.all(0),
-                    primaryXAxis: NumericAxis(
-                      isVisible: false,
-                    ),
-                    primaryYAxis: NumericAxis(isVisible: false, maximum: 4),
-                    series: <SplineAreaSeries<Data, double>>[
-                      SplineAreaSeries<Data, double>(
-                          dataSource: _chartData,
-                          xValueMapper: (Data visualizer, int index) =>
-                              visualizer.x,
-                          yValueMapper: (Data visualizer, int index) =>
-                              visualizer.y)
+    double topPadding = MediaQuery.of(context).padding.top;
+    return WillPopScope(
+      onWillPop :() async{
+        await goBack();
+        return true;
+      },
+      child: Scaffold(
+        body: Padding(
+          padding: EdgeInsets.only(top : 1.5 * topPadding, left: width * 0.05),
+          child: Column(
+            children: [Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Row(
+                        children: [
+                          Container(
+                            decoration: BoxDecoration(
+                                color: Colors.blue.withOpacity(0.5),
+                                borderRadius: BorderRadius.circular(7)),
+                            child: IconButton(
+                                padding: const EdgeInsets.all(0),
+                                onPressed: () {
+                                  widget.player.stop();
+                                  goBack();
+                                },
+                                icon: const Icon(
+                                  Icons.chevron_left,
+                                  size: 25,
+                                )),
+                          ),
+                          Padding(
+                            padding: EdgeInsets.only(left: width * 0.08),
+                            child: SizedBox(
+                              width: width * 0.5,
+                              child: Text(widget.audioName,
+                                  style: const TextStyle(
+                                      fontSize: 20, fontWeight: FontWeight.bold)),
+                            ),
+                          ),
+                        ],
+                      ),
                     ],
                   ),
-                  height: 250,
-                ),
-              )),
-          Text("start : " + start.toString() + "   end : " + end.toString()),
-          ControlButtons(player: widget.player, trim: trimSong),
-          StreamBuilder<PositionData>(
-                stream: _positionDataStream,
-                builder: (context, snapshot) {
-                  final positionData = snapshot.data;
-                  return SeekBar(
-                    duration: positionData?.duration ?? Duration.zero,
-                    position: positionData?.position ?? Duration.zero,
-                    bufferedPosition:
-                        positionData?.bufferedPosition ?? Duration.zero,
-                    onChangeEnd: widget.player.seek,
-                  );
-                },
-              ),
-              Expanded(
-                  child: Container(
-                margin: EdgeInsets.only(bottom: height * 0.05),
-                child: ListView.builder(
-                    controller: _scrollController,
-                    itemCount: widget.lyrics.length,
-                    itemBuilder: (BuildContext context, int index) {
-                      return GestureDetector(
-                        onTap: () {
-                          //print(player.position);
-                          widget.player.seek(
-                              Duration(seconds: widget.lyrics[index]["time"]));
-                          
-                        },
-                        child: Text(
-                          widget.lyrics[index]["line"] + "\n",
-                          style: TextStyle(
-                              fontSize: widget.player.position.inSeconds >=
-                                          widget.lyrics[index]["time"] &&
-                                      widget.player.position.inSeconds <=
-                                          widget.lyrics[index]["end_time"]
-                                  ? 25
-                                  : 20,
-                              color: widget.player.position.inSeconds >=
-                                          widget.lyrics[index]["time"] &&
-                                      widget.player.position.inSeconds <=
-                                          widget.lyrics[index]["end_time"]
-                                  ? Colors.black
-                                  : Colors.grey),
+              Container(
+                  margin: EdgeInsets.only(
+                      top: height * 0.05, left: width * 0.03, right: width * 0.03),
+                  width: width,
+                  child: SfRangeSelector(
+                    controller: _rangeController,
+                    min: _min,
+                    max: _max,
+                    initialValues: _initialValues,
+                    onChanged: (value) {
+                      setState(() {
+                        start = value.start.round();
+                        end = value.end.round();
+                        widget.player.seek(Duration(seconds: start));
+                      });
+                    },
+                    showLabels: false,
+                    child: SizedBox(
+                      child: SfCartesianChart(
+                        margin: const EdgeInsets.all(0),
+                        primaryXAxis: NumericAxis(
+                          isVisible: false,
                         ),
+                        primaryYAxis: NumericAxis(isVisible: false, maximum: 4),
+                        series: <SplineAreaSeries<Data, double>>[
+                          SplineAreaSeries<Data, double>(
+                              dataSource: _chartData,
+                              xValueMapper: (Data visualizer, int index) =>
+                                  visualizer.x,
+                              yValueMapper: (Data visualizer, int index) =>
+                                  visualizer.y)
+                        ],
+                      ),
+                      height: 250,
+                    ),
+                  )),
+              Text("start : " + start.toString() + " seconds  " + "   end : " + end.toString() + " seconds  "),
+              ControlButtons(player: widget.player, trim: trimSong),
+              StreamBuilder<PositionData>(
+                    stream: _positionDataStream,
+                    builder: (context, snapshot) {
+                      final positionData = snapshot.data;
+                      return SeekBar(
+                        duration: positionData?.duration ?? Duration.zero,
+                        position: positionData?.position ?? Duration.zero,
+                        bufferedPosition:
+                            positionData?.bufferedPosition ?? Duration.zero,
+                        onChangeEnd: widget.player.seek,
                       );
-                    }),
-              ))
-          // Container(
-          //   margin: const EdgeInsets.only(top: 50),
-          //   child: GestureDetector(
-          //     onTap: () {
-          //       Navigator.push(
-          //           context,
-          //           MaterialPageRoute(
-          //               builder: (context) => AudioPlayingPage(
-          //                     start: (widget.duration.inSeconds * start) / 10,
-          //                     end: (widget.duration.inSeconds * end) / 10,
-          //                     path: widget.url,
-          //                     audioName: widget.audioName,
-          //                     lyrics: widget.lyrics,
-          //                   )));
-          //     },
-          //     child: const Text(
-          //       "TRIM SHLOKA",
-          //       style:
-          //           TextStyle(color: Colors.black, fontWeight: FontWeight.bold),
-          //     ),
-          //   ),
-          //   height: 50,
-          //   width: 250,
-          //   color: Colors.blue,
-          //   alignment: Alignment.center,
-          // )
-        ],
+                    },
+                  ),
+                  Expanded(
+                      child: Container(
+                    margin: EdgeInsets.only(bottom: height * 0.05),
+                    child: ListView.builder(
+                        controller: _scrollController,
+                        itemCount: widget.lyrics.length,
+                        itemBuilder: (BuildContext context, int index) {
+                          return GestureDetector(
+                            onTap: () {
+                              if(noOfTaps % 2 == 0)
+                              {
+                                ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text("Start Point has been set to ${widget.lyrics[index]["line"]}")));
+                                widget.player.seek(
+                                  Duration(seconds: widget.lyrics[index]["time"]));
+                              setState(() {
+                                start = widget.lyrics[index]["time"];
+                                _rangeController.start = widget.lyrics[index]["time"];
+                                noOfTaps += 1;
+                              });
+                              }
+                              else if(noOfTaps % 2 == 1)
+                              {
+                                ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text("End Point has been set to ${widget.lyrics[index]["line"]}")));
+                              setState(() {
+                                end = widget.lyrics[index]["end_time"];
+                                _rangeController.end = widget.lyrics[index]["end_time"];
+                                noOfTaps += 1;
+                              });
+                              }
+                            },
+                            child: Text(
+                              widget.lyrics[index]["line"] + "\n",
+                              style: TextStyle(
+                                  fontSize: start + widget.player.position.inSeconds >=
+                                              widget.lyrics[index]["time"] &&
+                                          start + widget.player.position.inSeconds <=
+                                              widget.lyrics[index]["end_time"]
+                                      ? 25
+                                      : 20,
+                                  color: start + widget.player.position.inSeconds >=
+                                              widget.lyrics[index]["time"] &&
+                                          start + widget.player.position.inSeconds <=
+                                              widget.lyrics[index]["end_time"]
+                                      ? Colors.black
+                                      : Colors.grey),
+                            ),
+                          );
+                        }),
+                  ))
+            ],
+          ),
+        ),
       ),
     );
   }

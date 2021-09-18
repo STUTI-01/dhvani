@@ -79,7 +79,7 @@ class _AudioPlayingPageState extends State<AudioPlayingPage> {
       if (songTimeSeconds == line["time"] &&
           line["index"] * 10.0 <= _scrollController.position.maxScrollExtent) {
         setState(() {
-          debugPrint(line["index"]);
+          debugPrint(line["index"].toString());
           _scrollController.jumpTo(line["index"] * 10.0);
         });
       }
@@ -95,6 +95,15 @@ class _AudioPlayingPageState extends State<AudioPlayingPage> {
     //TODO
     timer = Timer.periodic(
         const Duration(seconds: 1), (Timer t) => scrollToLyrics(t.tick, t));
+  }
+  @override
+  void dispose() {
+    _scrollController.dispose();
+    if (timer!.isActive)
+    {
+      timer!.cancel();
+    }
+    super.dispose();
   }
 
   @override
@@ -163,6 +172,7 @@ class _AudioPlayingPageState extends State<AudioPlayingPage> {
                                           audioName: widget.audioName,
                                           duration: duration,
                                           player: player,
+                                          path: widget.path,
                                         )));
                           },
                           icon: const Icon(
