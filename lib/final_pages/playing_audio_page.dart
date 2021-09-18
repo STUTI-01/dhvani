@@ -33,7 +33,7 @@ class _AudioPlayingPageState extends State<AudioPlayingPage> {
     player = AudioPlayer();
     await player.setAsset(widget.path);
     // await player.setUrl(widget.path);
-    duration = (await player.duration)!;
+    duration = (player.duration)!;
   }
 
   void trimSong() async {
@@ -79,12 +79,12 @@ class _AudioPlayingPageState extends State<AudioPlayingPage> {
       if (songTimeSeconds == line["time"] &&
           line["index"] * 10.0 <= _scrollController.position.maxScrollExtent) {
         setState(() {
-          print(line["index"]);
+          debugPrint(line["index"]);
           _scrollController.jumpTo(line["index"] * 10.0);
         });
       }
     }
-    print(seconds);
+    debugPrint(seconds.toString());
   }
 
   @override
@@ -94,7 +94,7 @@ class _AudioPlayingPageState extends State<AudioPlayingPage> {
     initialiseScroll(0);
     //TODO
     timer = Timer.periodic(
-        Duration(seconds: 1), (Timer t) => scrollToLyrics(t.tick, t));
+        const Duration(seconds: 1), (Timer t) => scrollToLyrics(t.tick, t));
   }
 
   @override

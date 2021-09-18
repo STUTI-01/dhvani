@@ -44,14 +44,12 @@ Future<void> Record1() async {
      final ButtonStyle style =
         ElevatedButton.styleFrom(textStyle: const TextStyle(fontSize: 20));
 
-    return Container(
-      child: ElevatedButton(
+    return ElevatedButton(
             style: style,
             onPressed: () {
               Record1();
             },
             child: const Text('record'),
-          ),
       
     );
   }

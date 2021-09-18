@@ -15,7 +15,7 @@ class VisualizeAudio extends StatefulWidget {
   final Duration duration;
   final List lyrics;
   final AudioPlayer player;
-  VisualizeAudio(
+  const VisualizeAudio(
       {Key? key,
       required this.url,
       required this.audioName,
@@ -30,7 +30,7 @@ class VisualizeAudio extends StatefulWidget {
 
 class _VisualizeAudioState extends State<VisualizeAudio> {
   //SfRangeValues _values = const SfRangeValues(0.3, 0.7);
-  int _min = 0;
+  final int _min = 0;
   int _max = 0;
   late SfRangeValues _initialValues;
   late Random random;
@@ -50,12 +50,12 @@ class _VisualizeAudioState extends State<VisualizeAudio> {
       if (songTimeSeconds == line["time"] &&
           line["index"] * 10.0 <= _scrollController.position.maxScrollExtent) {
         setState(() {
-          print(line["index"]);
+          debugPrint(line["index"]);
           _scrollController.jumpTo(line["index"] * 10.0);
         });
       }
     }
-    print(seconds);
+    debugPrint(seconds.toString());
   }
 
   void trimSong() async {
@@ -78,13 +78,13 @@ class _VisualizeAudioState extends State<VisualizeAudio> {
     end = (widget.duration.inSeconds / 2).round();
     _initialValues = SfRangeValues((widget.duration.inSeconds / 4).round(),
         (widget.duration.inSeconds / 2).round());
-    random = new Random();
+    random = Random();
     _chartData = List<Data>.generate(
         50, (index) => Data(x: index + 1, y: random.nextInt(4).toDouble()));
     initialiseScroll(0);
     //TODO
     timer = Timer.periodic(
-        Duration(seconds: 1), (Timer t) => scrollToLyrics(t.tick, t));
+        const Duration(seconds: 1), (Timer t) => scrollToLyrics(t.tick, t));
     super.initState();
   }
 
@@ -110,7 +110,7 @@ class _VisualizeAudioState extends State<VisualizeAudio> {
                   });
                 },
                 showLabels: false,
-                child: Container(
+                child: SizedBox(
                   child: SfCartesianChart(
                     margin: const EdgeInsets.all(0),
                     primaryXAxis: NumericAxis(
