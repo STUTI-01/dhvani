@@ -106,11 +106,13 @@ class _VisualizeAudioState extends State<VisualizeAudio> {
   void dispose() {
     _scrollController.dispose();
     _rangeController.dispose();
+    timer!.cancel();
     super.dispose();
   }
   Future goBack() async
   {
 Navigator.pushReplacement(context, MaterialPageRoute(builder: (BuildContext context) => AudioPlayingPage(start: 0.0, end: double.parse(widget.player.duration!.inSeconds.toString()), path: widget.path, audioName: widget.audioName, lyrics: widget.lyrics)));
+timer!.cancel();
   }
 
   @override
