@@ -1,4 +1,4 @@
-import 'package:dhvani/test.dart';
+import 'package:dhvani/final_pages/playing_audio_page.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -10,47 +10,91 @@ class MusicListPage extends StatefulWidget {
 }
 
 class _MusicListPageState extends State<MusicListPage> {
-  List musicList = [
-    {
-      "title": "Ganapati Mantra",
-      "url":
-          "https://firebasestorage.googleapis.com/v0/b/dhvani-aa814.appspot.com/o/Ganesha_Chant_108_Times_Ganapathi_Mantra.mp3?alt=media&token=d030ce3e-d586-49f8-8b6b-2ffec22bcef5",
-      "duration": "20:37 mins",
-      "seconds": 1237.0
-    },
-    {
-      "title": "Navagraha Mantras",
-      "url":
-          "https://firebasestorage.googleapis.com/v0/b/dhvani-aa814.appspot.com/o/NAVAGRAHA_MANTRAS.mp3?alt=media&token=0e7913fc-c82c-4c39-b3a3-3c1064e2f0a4",
-      "duration": "34:54 mins",
-      "seconds": 2094.0
-    },
-    {
-      "title": "Gayatri Mantra",
-      "url":
-          "https://firebasestorage.googleapis.com/v0/b/dhvani-aa814.appspot.com/o/Rudrathi-Gayatri-Mantra.mp3?alt=media&token=493708bc-27da-40e5-9367-7c9a0f3bada7",
-      "duration": "30:37 mins",
-      "seconds": 1837.0
-    }
-  ];
   List dhyayeNityam = [
-    {"line": "Dhyaye Nityam Mahesham, Rajatgirnibham", "time": 4},
-    {"line": "Charuchandra Vatansam, Ratnakalpo Jwalangam", "time": 12},
-    {"line": "Parashumrigvarabhivihastam Prasannam", "time": 22},
-    {"line": "Padmaseelam Samantaat", "time": 30},
-    {"line": "Stutmamarganayehi Vgyagratkrityamvasanam", "time": 35},
-    {"line": "Vishwadhyam Vishwavandam Nikhilbhayaharam", "time": 42},
-    {"line": "Panchvatram Trinetram", "time": 50}
+    {
+      "line": "Dhyaye Nityam Mahesham, Rajatgirnibham",
+      "time": 4,
+      "end_time": 12,
+      "index": 0
+    },
+    {
+      "line": "Charuchandra Vatansam, Ratnakalpo Jwalangam",
+      "time": 12,
+      "end_time": 22,
+      "index": 8
+    },
+    {
+      "line": "Parashumrigvarabhivihastam Prasannam",
+      "time": 22,
+      "end_time": 30,
+      "index": 16
+    },
+    {"line": "Padmaseelam Samantaat", "time": 30, "end_time": 35, "index": 24},
+    {
+      "line": "Stutmamarganayehi Vgyagratkrityamvasanam",
+      "time": 35,
+      "end_time": 42,
+      "index": 32
+    },
+    {
+      "line": "Vishwadhyam Vishwavandam Nikhilbhayaharam",
+      "time": 42,
+      "end_time": 50,
+      "index": 40
+    },
+    {"line": "Panchvatram Trinetram", "time": 50, "end_time": 60, "index": 48},
+    {
+      "line": "                                ",
+      "time": 60,
+      "end_time": 60,
+      "index": 48
+    },
+    {
+      "line": "                                ",
+      "time": 60,
+      "end_time": 60,
+      "index": 48
+    },
+    {
+      "line": "                                ",
+      "time": 60,
+      "end_time": 60,
+      "index": 48
+    },
+    {
+      "line": "                                ",
+      "time": 60,
+      "end_time": 60,
+      "index": 48
+    },
   ];
   List gayatriMantra = [
-    {"line": "Om Bhur Bhuvaḥ Swaḥ", "time": 8},
-    {"line": "Tat-savitur Vareñyaṃ", "time": 12},
-    {"line": "Bhargo Devasya Dheemahi", "time": 16},
-    {"line": "Dhiyo Yonaḥ Prachodayāt", "time": 20},
-    {"line": "Om Bhur Bhuvaḥ Swaḥ", "time": 24},
-    {"line": "Tat-savitur Vareñyaṃ", "time": 28},
-    {"line": "Bhargo Devasya Dheemahi", "time": 32},
-    {"line": "Dhiyo Yonaḥ Prachodayāt", "time": 36}
+    {"line": "Om Bhur Bhuvaḥ Swaḥ", "time": 8, "end_time": 12, "index": 0},
+    {"line": "Tat-savitur Vareñyaṃ", "time": 12, "end_time": 16, "index": 5},
+    {
+      "line": "Bhargo Devasya Dheemahi",
+      "time": 16,
+      "end_time": 20,
+      "index": 10
+    },
+    {
+      "line": "Dhiyo Yonaḥ Prachodayāt",
+      "time": 20,
+      "end_time": 24,
+      "index": 15
+    },
+    {"line": "Om Bhur Bhuvaḥ Swaḥ", "time": 24, "end_time": 28, "index": 20},
+    {"line": "Tat-savitur Vareñyaṃ", "time": 28, "end_time": 32, "index": 25},
+    {
+      "line": "Bhargo Devasya Dheemahi",
+      "time": 32,
+      "end_time": 36,
+      "index": 30
+    },
+    {"line": "Dhiyo yo nah prachodayat", "time": 36, "end_time": 39, "index": 35},
+    {"line": "                       ", "time": 36, "end_time": 39, "index": 35},
+    {"line": "                       ", "time": 36, "end_time": 39, "index": 35},
+    {"line": "                       ", "time": 36, "end_time": 39, "index": 35}
   ];
   List guruBrahma = [
     {"line": "GururBrahma", "time": 9},
@@ -58,14 +102,14 @@ class _MusicListPageState extends State<MusicListPage> {
     {"line": "GururDevo", "time": 16},
     {"line": "Maheshwaraha", "time": 18},
     {"line": "Guru Saakshaat", "time": 22},
-    {"line": " ParaBrahma", "time": 25},
+    {"line": "ParaBrahma", "time": 25},
     {"line": "Tasmai Sri Gurave Namaha", "time": 27},
     {"line": "GururBrahma", "time": 34},
     {"line": "GururVishnu", "time": 37},
     {"line": "GururDevo", "time": 40},
     {"line": "Maheshwaraha", "time": 42},
     {"line": "Guru Saakshaat", "time": 46},
-    {"line": " ParaBrahma", "time": 49},
+    {"line": "ParaBrahma", "time": 49},
     {"line": "Tasmai Sri Gurave Namaha", "time": 51},
     {"line": "GururBrahma", "time": 60},
     {"line": "GururVishnu", "time": 64},
@@ -90,45 +134,55 @@ class _MusicListPageState extends State<MusicListPage> {
     {"line": "mrityormuksheeya maamritaat", "time": 58}
   ];
   List sarveBhavantu = [
-    {"line": " Sarve bhavantu sukhinaḥ", "time": 0},
+    {"line": "Sarve bhavantu sukhinaḥ", "time": 0},
     {"line": "Sarve santu nirāmayāḥ", "time": 7},
     {"line": "Sarve bhadrāṇi paśyantu", "time": 15},
     {"line": "Mā kashchit duḥkha bhāgbhavet", "time": 23},
     {"line": "Om ", "time": 32}
   ];
-  List assetAudios = [
-    {
-      "title": "Dhyaye Nityam",
-      "path": "assets\Audio\dhyaye nityam.mp3",
-      "duration": "1 min",
-      "seconds": 60.0,
-    },
-    {
-      "title": "Gayatri Mantra",
-      "path": "assets\Audio\gayatri-mantra-raga-1 (mp3cut.net).mp3",
-      "duration": "39 secs",
-      "seconds": 39.0,
-    },
-    {
-      "title": "Guru Brahma Guru Vishnu",
-      "path": "assets\Audio\Guru Brahma Guru Vishnu - (Raag.Fm).mp3",
-      "duration": "1:24 min",
-      "seconds": 84.0,
-    },
-    {
-      "title": "Maha Mrutyunjaya Mantra",
-      "path":
-          "assets\Audio\Maha-Mrutyunjaya-Mantra-108-cycles (mp3cut.net).mp3",
-      "duration": "1:04 min",
-      "seconds": 64.0,
-    },
-    {
-      "title": "Sarve Bhavantu",
-      "path": "assets\Audio\Sarve Bhavantu.mp3",
-      "duration": "34 secs",
-      "seconds": 34.0,
-    }
-  ];
+  List assetAudios = [];
+  @override
+  void initState() {
+    assetAudios = [
+      {
+        "title": "Dhyaye Nityam",
+        "path": "assets/Audio/dhyaye nityam.mp3",
+        "duration": "1 min",
+        "seconds": 60.0,
+        "lyrics": dhyayeNityam
+      },
+      {
+        "title": "Gayatri Mantra",
+        "path": "assets/Audio/gayatri-mantra-raga-1 (mp3cut.net).mp3",
+        "duration": "39 secs",
+        "seconds": 39.0,
+        "lyrics": gayatriMantra
+      },
+      {
+        "title": "Guru Brahma Guru Vishnu",
+        "path": "assets/Audio/Guru Brahma Guru Vishnu - (Raag.Fm).mp3",
+        "duration": "1:24 min",
+        "seconds": 84.0,
+        "lyrics": guruBrahma
+      },
+      {
+        "title": "Maha Mrutyunjaya Mantra",
+        "path":
+            "assets/Audio/Maha-Mrutyunjaya-Mantra-108-cycles (mp3cut.net).mp3",
+        "duration": "1:04 min",
+        "seconds": 64.0,
+        "lyrics": mahaMrutyunjaya
+      },
+      {
+        "title": "Sarve Bhavantu",
+        "path": "assets/Audio/Sarve Bhavantu.mp3",
+        "duration": "34 secs",
+        "seconds": 34.0,
+        "lyrics": sarveBhavantu
+      }
+    ];
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -168,18 +222,20 @@ class _MusicListPageState extends State<MusicListPage> {
             Expanded(
                 child: ListView.builder(
                     shrinkWrap: true,
-                    itemCount: musicList.length,
+                    itemCount: assetAudios.length,
                     itemBuilder: (BuildContext context, int index) {
                       return GestureDetector(
                         onTap: () {
                           Navigator.push(
                               context,
                               MaterialPageRoute(
-                                  builder: (context) => Test(
+                                  builder: (context) => AudioPlayingPage(
                                         start: 0.0,
-                                        end: musicList[index]['seconds'],
-                                        url: musicList[index]['url'],
-                                        audioName: musicList[index]['title'],
+                                        //TODO
+                                        end: assetAudios[index]['seconds'],
+                                        path: assetAudios[index]['path'],
+                                        audioName: assetAudios[index]['title'],
+                                        lyrics: assetAudios[index]['lyrics'],
                                       )));
                         },
                         child: Container(
@@ -210,14 +266,14 @@ class _MusicListPageState extends State<MusicListPage> {
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
                                     Text(
-                                      musicList[index]['title'],
+                                      assetAudios[index]['title'],
                                       style: const TextStyle(
                                         fontSize: 17,
                                         fontWeight: FontWeight.w500,
                                       ),
                                     ),
                                     Text(
-                                      "\n" + musicList[index]['duration'],
+                                      "\n" + assetAudios[index]['duration'],
                                       style: const TextStyle(
                                         fontSize: 15,
                                         fontWeight: FontWeight.w400,
