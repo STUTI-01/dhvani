@@ -104,10 +104,10 @@ class _VisualizeAudioState extends State<VisualizeAudio> {
   }
   @override
   void dispose() {
+    super.dispose();
     _scrollController.dispose();
     _rangeController.dispose();
     timer!.cancel();
-    super.dispose();
   }
   Future goBack() async
   {
@@ -142,6 +142,7 @@ timer!.cancel();
                                 padding: const EdgeInsets.all(0),
                                 onPressed: () {
                                   widget.player.stop();
+                                  _scrollController.dispose();
                                   goBack();
                                 },
                                 icon: const Icon(

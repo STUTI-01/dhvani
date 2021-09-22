@@ -5,6 +5,7 @@ import 'package:dhvani/visualize_audio.dart';
 import 'package:flutter/material.dart';
 import 'package:just_audio/just_audio.dart';
 import 'package:rxdart/rxdart.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class AudioPlayingPage extends StatefulWidget {
   final double start;
@@ -18,7 +19,7 @@ class AudioPlayingPage extends StatefulWidget {
       required this.end,
       required this.path,
       required this.audioName,
-      required this.lyrics})
+      required this.lyrics,})
       : super(key: key);
 
   @override
@@ -28,11 +29,15 @@ class AudioPlayingPage extends StatefulWidget {
 class _AudioPlayingPageState extends State<AudioPlayingPage> {
   late AudioPlayer player;
   late Duration duration;
+  late SharedPreferences _preferences;
+  late int startTime;
 
   void initialisePlayer() async {
     player = AudioPlayer();
+    _preferences = await SharedPreferences.getInstance();
+    startTime = await _preferences.getInt(widget.audioName) ?? 0;
     await player.setAsset(widget.path);
-    // await player.setUrl(widget.path);
+    await player.seek(Duration(seconds: startTime));
     duration = (player.duration)!;
   }
 
@@ -59,21 +64,6 @@ class _AudioPlayingPageState extends State<AudioPlayingPage> {
 
   Timer? timer;
   scrollToLyrics(int seconds, Timer timer) {
-    // int timeRemaining = player.duration!.inSeconds - player.position.inSeconds;
-    // print("Time Remaining : " + timeRemaining.toString());
-
-    // for (Map line in widget.lyrics) {
-    //   if (line["time"] == seconds) {
-    //     print(line["line"]);
-    //     if (line["index"] * 10.0 >=
-    //         _scrollController.position.maxScrollExtent) {
-    //       timer.cancel();
-    //     }
-    //     setState(() {
-    //       _scrollController.jumpTo(line["index"] * 10.0);
-    //     });
-    //   }
-    // }
     int songTimeSeconds = player.position.inSeconds;
     for (Map line in widget.lyrics) {
       if (songTimeSeconds == line["time"] &&
@@ -87,6 +77,7 @@ class _AudioPlayingPageState extends State<AudioPlayingPage> {
     debugPrint(seconds.toString());
   }
 
+
   @override
   void initState() {
     super.initState();
@@ -97,13 +88,11 @@ class _AudioPlayingPageState extends State<AudioPlayingPage> {
         const Duration(seconds: 1), (Timer t) => scrollToLyrics(t.tick, t));
   }
   @override
-  void dispose() {
-    _scrollController.dispose();
-    if (timer!.isActive)
-    {
-      timer!.cancel();
-    }
+  void dispose() async{
     super.dispose();
+    _preferences.setInt(widget.audioName, player.position.inSeconds);
+    _scrollController.dispose();
+    timer!.cancel();
   }
 
   @override
@@ -134,6 +123,7 @@ class _AudioPlayingPageState extends State<AudioPlayingPage> {
                               padding: const EdgeInsets.all(0),
                               onPressed: () {
                                 timer!.cancel();
+                                _scrollController.dispose();
                                 player.stop();
                                 Navigator.pop(context);
                               },

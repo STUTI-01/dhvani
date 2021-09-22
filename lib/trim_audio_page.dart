@@ -8,7 +8,8 @@ class TrimAudioPage extends StatefulWidget {
   final String url;
   final String audioName;
   final List lyrics;
-  const TrimAudioPage({Key? key, required this.url, required this.audioName, required this.lyrics})
+  final int startTime;
+  const TrimAudioPage({Key? key, required this.url, required this.audioName, required this.lyrics, required this.startTime})
       : super(key: key);
 
   @override

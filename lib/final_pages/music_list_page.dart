@@ -1,6 +1,7 @@
 import 'package:dhvani/final_pages/playing_audio_page.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class MusicListPage extends StatefulWidget {
   const MusicListPage({Key? key}) : super(key: key);
@@ -149,7 +150,7 @@ class _MusicListPageState extends State<MusicListPage> {
         "path": "assets/Audio/dhyaye nityam.mp3",
         "duration": "1 min",
         "seconds": 60.0,
-        "lyrics": dhyayeNityam
+        "lyrics": dhyayeNityam,
       },
       {
         "title": "Gayatri Mantra",
