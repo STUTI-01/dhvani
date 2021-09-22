@@ -1,5 +1,7 @@
 import 'dart:async';
 import 'package:dhvani/final_pages/playing_audio_page.dart';
+import 'package:dhvani/final_pages/stops_list_page.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:syncfusion_flutter_sliders/sliders.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
@@ -47,6 +49,9 @@ class _VisualizeAudioState extends State<VisualizeAudio> {
   late dynamic start;
   late dynamic end;
   Timer? timer;
+  int startIndex = 0;
+  int endIndex = 0;
+  List stopsList = [];
   ScrollController _scrollController = ScrollController();
   late RangeController _rangeController;
   
@@ -75,6 +80,12 @@ class _VisualizeAudioState extends State<VisualizeAudio> {
         start: Duration(seconds: start),
         end: Duration(seconds: end));
     await widget.player.play();
+  }
+  void addStop()
+  {
+    stopsList.add({"name" : "stop ${stopsList.length}", "start" : start, "end" : end, "lyrics" : widget.lyrics.sublist(startIndex, endIndex + 1) + widget.lyrics.sublist(widget.lyrics.length- 4, widget.lyrics.length), "path" : widget.path , "audioName": widget.audioName, });
+    debugPrint(startIndex.toString());
+    debugPrint(endIndex.toString());
   }
    Stream<PositionData> get _positionDataStream =>
       Rx.combineLatest3<Duration, Duration, Duration?, PositionData>(
@@ -152,7 +163,7 @@ timer!.cancel();
                           Padding(
                             padding: EdgeInsets.only(left: width * 0.08),
                             child: SizedBox(
-                              width: width * 0.5,
+                              width: width * 0.4,
                               child: Text(widget.audioName,
                                   style: const TextStyle(
                                       fontSize: 20, fontWeight: FontWeight.bold)),
@@ -160,11 +171,25 @@ timer!.cancel();
                           ),
                         ],
                       ),
+                      
+                          GestureDetector(
+                            onTap: (){
+                              addStop();
+                            },
+                            child: Container(
+                                                margin: EdgeInsets.only(right: width * 0.05),
+                                                padding: EdgeInsets.symmetric(horizontal: width * 0.03, vertical: height * 0.02),
+                                                decoration: BoxDecoration(
+                            color: Colors.blue,
+                            borderRadius: BorderRadius.circular(7)),
+                                                child: const Text("SAVE THIS", style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),),
+                                              ),
+                          )
                     ],
                   ),
               Container(
                   margin: EdgeInsets.only(
-                      top: height * 0.05, left: width * 0.03, right: width * 0.03),
+                      top: height * 0.035, left: width * 0.01, right: width * 0.001),
                   width: width,
                   child: SfRangeSelector(
                     controller: _rangeController,
@@ -174,6 +199,17 @@ timer!.cancel();
                     onChanged: (value) {
                       setState(() {
                         start = value.start.round();
+                        for (int i = 0; i < widget.lyrics.length; i++)
+                        {
+                          if(start >= widget.lyrics[i]["time"] && start <= widget.lyrics[i]["end_time"] )
+                          {
+                            startIndex = i;
+                          }
+                          if(end >= widget.lyrics[i]["time"] && end <= widget.lyrics[i]["end_time"] )
+                          {
+                            endIndex = i;
+                          }
+                        }
                         end = value.end.round();
                         widget.player.seek(Duration(seconds: start));
                       });
@@ -195,16 +231,17 @@ timer!.cancel();
                                   visualizer.y)
                         ],
                       ),
-                      height: 250,
+                      height: height * 0.35,
                     ),
                   )),
               Text("start : " + start.toString() + " seconds  " + "   end : " + end.toString() + " seconds  "),
               ControlButtons(player: widget.player, trim: trimSong),
               StreamBuilder<PositionData>(
+              
                     stream: _positionDataStream,
                     builder: (context, snapshot) {
                       final positionData = snapshot.data;
-                      return SeekBar(
+                      return SeekBar( 
                         duration: positionData?.duration ?? Duration.zero,
                         position: positionData?.position ?? Duration.zero,
                         bufferedPosition:
@@ -215,7 +252,7 @@ timer!.cancel();
                   ),
                   Expanded(
                       child: Container(
-                    margin: EdgeInsets.only(bottom: height * 0.05),
+                    margin: EdgeInsets.only(bottom: height * 0.03),
                     child: ListView.builder(
                         controller: _scrollController,
                         itemCount: widget.lyrics.length,
@@ -229,6 +266,7 @@ timer!.cancel();
                                   Duration(seconds: widget.lyrics[index]["time"]));
                               setState(() {
                                 start = widget.lyrics[index]["time"];
+                                startIndex = index;
                                 _rangeController.start = widget.lyrics[index]["time"];
                                 noOfTaps += 1;
                               });
@@ -238,6 +276,7 @@ timer!.cancel();
                                 ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text("End Point has been set to ${widget.lyrics[index]["line"]}")));
                               setState(() {
                                 end = widget.lyrics[index]["end_time"];
+                                endIndex = index;
                                 _rangeController.end = widget.lyrics[index]["end_time"];
                                 noOfTaps += 1;
                               });
@@ -261,7 +300,21 @@ timer!.cancel();
                             ),
                           );
                         }),
-                  ))
+                  )),
+                  
+                          GestureDetector(
+                            onTap: (){
+                              Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) => StopsListPage(stopsList: stopsList)));
+                            },
+                            child: Container(
+                                                margin: EdgeInsets.only(right: width * 0.05, bottom: height * 0.02),
+                                                padding: EdgeInsets.symmetric(horizontal: width * 0.03, vertical: height * 0.02),
+                                                decoration: BoxDecoration(
+                            color: Colors.blue,
+                            borderRadius: BorderRadius.circular(7)),
+                                                child: const Text("View All Stops Created", style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),),
+                                              ),
+                          )
             ],
           ),
         ),

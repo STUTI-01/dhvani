@@ -163,7 +163,7 @@ class _AudioPlayingPageState extends State<AudioPlayingPage> {
                           onPressed: () {
                             timer!.cancel();
                             player.stop();
-                            Navigator.push(
+                            Navigator.pushReplacement(
                                 context,
                                 MaterialPageRoute(
                                     builder: (context) => VisualizeAudio(
@@ -249,19 +249,20 @@ class _AudioPlayingPageState extends State<AudioPlayingPage> {
                       return GestureDetector(
                         onTap: () {
                           //print(player.position);
+                          var position = widget.start.round() + widget.lyrics[index]["time"];
                           player.seek(
-                              Duration(seconds: widget.lyrics[index]["time"]));
+                              Duration(seconds: int.parse(position.toString())));
                         },
                         child: Text(
                           widget.lyrics[index]["line"] + "\n",
                           style: TextStyle(
-                              fontSize: player.position.inSeconds >=
+                              fontSize: widget.start.round() + player.position.inSeconds >=
                                           widget.lyrics[index]["time"] &&
                                       player.position.inSeconds <=
                                           widget.lyrics[index]["end_time"]
                                   ? 25
                                   : 20,
-                              color: player.position.inSeconds >=
+                              color: widget.start.round() + player.position.inSeconds >=
                                           widget.lyrics[index]["time"] &&
                                       player.position.inSeconds <=
                                           widget.lyrics[index]["end_time"]
