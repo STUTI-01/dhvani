@@ -98,48 +98,48 @@ class _MusicListPageState extends State<MusicListPage> {
     {"line": "                       ", "time": 36, "end_time": 39, "index": 35}
   ];
   List guruBrahma = [
-    {"line": "GururBrahma", "time": 9},
-    {"line": "GururVishnu", "time": 13},
-    {"line": "GururDevo", "time": 16},
-    {"line": "Maheshwaraha", "time": 18},
-    {"line": "Guru Saakshaat", "time": 22},
-    {"line": "ParaBrahma", "time": 25},
-    {"line": "Tasmai Sri Gurave Namaha", "time": 27},
-    {"line": "GururBrahma", "time": 34},
-    {"line": "GururVishnu", "time": 37},
-    {"line": "GururDevo", "time": 40},
-    {"line": "Maheshwaraha", "time": 42},
-    {"line": "Guru Saakshaat", "time": 46},
-    {"line": "ParaBrahma", "time": 49},
-    {"line": "Tasmai Sri Gurave Namaha", "time": 51},
-    {"line": "GururBrahma", "time": 60},
-    {"line": "GururVishnu", "time": 64},
-    {"line": "GururDevo", "time": 66},
-    {"line": "Maheshwaraha", "time": 69},
-    {"line": "Guru Saakshaat", "time": 73},
-    {"line": " ParaBrahma", "time": 76},
-    {"line": "Tasmai Sri Gurave Namaha", "time": 78}
+    {"line": "GururBrahma", "time": 9, "end_time": 13, "index": 0},
+    {"line": "GururVishnu", "time": 13, "end_time": 16, "index": 8},
+    {"line": "GururDevo", "time": 16, "end_time": 18, "index": 16},
+    {"line": "Maheshwaraha", "time": 18, "end_time": 22, "index": 24},
+    {"line": "Guru Saakshaat", "time": 22, "end_time": 25, "index": 32},
+    {"line": "ParaBrahma", "time": 25, "end_time": 27, "index": 40},
+    {"line": "Tasmai Sri Gurave Namaha", "time": 27, "end_time": 34, "index": 48},
+    {"line": "GururBrahma", "time": 34, "end_time": 37, "index": 56},
+    {"line": "GururVishnu", "time": 37, "end_time": 40, "index": 64},
+    {"line": "GururDevo", "time": 40, "end_time": 42, "index": 72},
+    {"line": "Maheshwaraha", "time": 42, "end_time": 46, "index": 80},
+    {"line": "Guru Saakshaat", "time": 46, "end_time": 49, "index": 88},
+    {"line": "ParaBrahma", "time": 49, "end_time": 51, "index": 96},
+    {"line": "Tasmai Sri Gurave Namaha", "time": 51, "end_time":60, "index": 104},
+    {"line": "GururBrahma", "time": 60, "end_time": 64, "index": 112},
+    {"line": "GururVishnu", "time": 64, "end_time": 66, "index": 120},
+    {"line": "GururDevo", "time": 66, "end_time": 69, "index": 128},
+    {"line": "Maheshwaraha", "time": 69, "end_time": 73, "index": 136},
+    {"line": "Guru Saakshaat", "time": 73, "end_time": 76, "index": 144},
+    {"line": " ParaBrahma", "time": 76, "end_time": 78, "index": 152},
+    {"line": "Tasmai Sri Gurave Namaha", "time": 78, "end_time": 84, "index": 160}
   ];
   List mahaMrutyunjaya = [
-    {"line": "Aum Tryambakam yajaamahe", "time": 10},
-    {"line": "sugandhim pushtivardhanam", "time": 12},
-    {"line": "Urvaarukamiva bandhanaan", "time": 16},
-    {"line": "mrityormuksheeya maamritaat", "time": 19},
-    {"line": "Aum Tryambakam yajaamahe", "time": 29},
-    {"line": "sugandhim pushtivardhanam", "time": 32},
-    {"line": "Urvaarukamiva bandhanaan", "time": 36},
-    {"line": "mrityormuksheeya maamritaat", "time": 39},
-    {"line": "Aum Tryambakam yajaamahe", "time": 48},
-    {"line": "sugandhim pushtivardhanam", "time": 52},
-    {"line": "Urvaarukamiva bandhanaan", "time": 55},
-    {"line": "mrityormuksheeya maamritaat", "time": 58}
+    {"line": "Aum Tryambakam yajaamahe", "time": 10, "end_time": 12, "index": 0},
+    {"line": "sugandhim pushtivardhanam", "time": 12, "end_time": 16, "index": 8},
+    {"line": "Urvaarukamiva bandhanaan", "time": 16, "end_time": 19, "index": 16},
+    {"line": "mrityormuksheeya maamritaat", "time": 19, "end_time": 29, "index": 24},
+    {"line": "Aum Tryambakam yajaamahe", "time": 29, "end_time": 32, "index": 32},
+    {"line": "sugandhim pushtivardhanam", "time": 32, "end_time": 36, "index": 40},
+    {"line": "Urvaarukamiva bandhanaan", "time": 36, "end_time": 39, "index": 48},
+    {"line": "mrityormuksheeya maamritaat", "time": 39, "end_time": 48, "index": 56},
+    {"line": "Aum Tryambakam yajaamahe", "time": 48, "end_time": 52, "index": 64},
+    {"line": "sugandhim pushtivardhanam", "time": 52, "end_time": 55, "index": 72},
+    {"line": "Urvaarukamiva bandhanaan", "time": 55, "end_time": 58, "index": 80},
+    {"line": "mrityormuksheeya maamritaat", "time": 58, "end_time": 64, "index": 88}
   ];
   List sarveBhavantu = [
-    {"line": "Sarve bhavantu sukhinaḥ", "time": 0},
-    {"line": "Sarve santu nirāmayāḥ", "time": 7},
-    {"line": "Sarve bhadrāṇi paśyantu", "time": 15},
-    {"line": "Mā kashchit duḥkha bhāgbhavet", "time": 23},
-    {"line": "Om ", "time": 32}
+    {"line": "Sarve bhavantu sukhinaḥ", "time": 0, "end_time": 7, "index": 0},
+    {"line": "Sarve santu nirāmayāḥ", "time": 7, "end_time": 15, "index": 8},
+    {"line": "Sarve bhadrāṇi paśyantu", "time": 15, "end_time": 23, "index": 16},
+    {"line": "Mā kashchit duḥkha bhāgbhavet", "time": 23, "end_time": 32, "index": 24},
+    {"line": "Om ", "time": 32, "end_time": 34, "index": 32}
   ];
   List assetAudios = [];
   @override
